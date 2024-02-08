@@ -4,19 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 
-
-type Todo = {
-  text: string;
-  isCompleted: boolean;
-};
-
-interface ToDoProps {
-  todo: Todo;
-  index: number;
-  completeTodo: (index: number) => void;
-  removeTodo: (index: number) => void;
-  editTodo: (index: number) => void;
-}
+import { ToDoProps } from './types';
 
 export default function ToDo({
   todo,
