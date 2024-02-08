@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 
-type ToDoFormProps = {
-  addTodo: (text: string) => void;
-  initialText?: string;
-};
+import { ToDoFormProps } from "./types";
 
 export default function ToDoForm({ addTodo, initialText }: ToDoFormProps) {
   const [value, setValue] = useState(initialText || "");
@@ -21,15 +18,17 @@ export default function ToDoForm({ addTodo, initialText }: ToDoFormProps) {
       <div style={{display: "flex"}}>
         <TextField 
           id="outlined-basic" 
-          label="New Task" 
-          variant="outlined" 
+          label={initialText ? "Edit" : "Add todo"}
+          variant={initialText ? "outlined" : "standard"}
           type="text"
           size="small"
           fullWidth
           value={value}
           onChange={e => setValue(e.target.value)}
         />
-        <Button type="submit">Add</Button>
+        <Button type="submit">
+          {initialText ? "Save" : "Add"}
+        </Button>
       </div>
     </form>
   );

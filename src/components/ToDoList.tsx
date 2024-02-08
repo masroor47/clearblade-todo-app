@@ -4,26 +4,24 @@ import ToDoForm from "./ToDoForm";
 import ToDo from "./ToDo";
 import { Stack } from "@mui/material";
 
-type Todo = {
-  text: string;
-  isCompleted: boolean;
-};
+import { TodoType } from "./types";
 
 export default function ToDoList() {
   // initialize todos from local storage if available
-  const [todos, setTodos] = useState<Todo[]>(() => {
+  const [todos, setTodos] = useState<TodoType[]>(() => {
     const storedTodos = localStorage.getItem("todos");
     return storedTodos ? JSON.parse(storedTodos) : [];
   });
   const [editTodoIndex, setEditTodoIndex] = useState<number | null>(null);
 
-  // Update local storage when todos change
+  // update local storage when todos change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
   const addTodo = (text: string) => {
     if (editTodoIndex !== null) {
+      // if this is an edit, update the todo at editTodoIndex
       const newTodos = [...todos];
       newTodos[editTodoIndex].text = text;
       setTodos(newTodos);
