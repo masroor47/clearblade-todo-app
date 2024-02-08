@@ -3,6 +3,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
+import Checkbox from '@mui/material/Checkbox';
 
 import { ToDoProps } from './types';
 
@@ -17,13 +18,15 @@ export default function ToDo({
     <Stack direction="row" alignItems="center" justifyContent="space-between">
       {/* change color to green if todo.completed is true: */}
         
-      <div style={{backgroundColor: todo.isCompleted ? "green" : ""}}>
+      <div>
+        <Checkbox
+          checked={todo.isCompleted}
+          onClick={() => completeTodo(index)}
+        />
         {todo.text}
       </div>
       <div>
-        <IconButton onClick={() => completeTodo(index)}>
-          <CheckIcon />
-        </IconButton>
+
         <IconButton onClick={() => removeTodo(index)}>
           <CloseIcon />
         </IconButton>
