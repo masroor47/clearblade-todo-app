@@ -1,46 +1,32 @@
-# Getting Started with Create React App
+# Awesome ToDo List App!
+Presenting to you - Awesome ToDo List app! Write any tasks that you want to complete in a nice user friendly UI and seize the day!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tech
+* React with TypeScript
+* Material UI for styling
+* Using local storage to persist todo items
 
-## Available Scripts
+## Usage
+This is a classic todo list app with the following features:
+* add todo items by typing in the form and hitting return
+* mark items as complete
+* delete items
+* rearrange items by clicking and dragging
+* don't worry about accidentally refreshing the page, your tasks will persist!
 
-In the project directory, you can run:
+Subscription tear coming soon!
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Users must be able to perform the following operations on their todos:
+* View all todos
+* Create new todos
+* Update the status and title of todos that have already been created
+* Delete todos
+* Search their list of todos by title
+* Filter todos by status
+## If you have time remaining, consider implementing any of these more advanced features:
+* User can drag and drop todos to reorder them
+* When creating a todo, user can upload an image to display with the todo
+* User can select existing todo as a template for creating a new todo item
+* Persist data in local storage to maintain it across refreshes
