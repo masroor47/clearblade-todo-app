@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
+import FilterSelect from "./FilterSelect";
 import ToDoForm from "./ToDoForm";
 import ToDo from "./ToDo";
 import { Stack } from "@mui/material";
 
 import { TodoType } from "./types";
+
 
 export default function ToDoList() {
   // initialize todos from local storage if available
@@ -12,12 +14,24 @@ export default function ToDoList() {
     const storedTodos = localStorage.getItem("todos");
     return storedTodos ? JSON.parse(storedTodos) : [];
   });
+  const [filteredTodos, setFilteredTodos] = useState<TodoType[]>(todos);
   const [editTodoIndex, setEditTodoIndex] = useState<number | null>(null);
+  const [filterOption, setFilterOption] = useState<string>("all");
 
   // update local storage when todos change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    const filteredTodos = todos.filter(todo => {
+      if (filterOption === "all") return true;
+      if (filterOption === "active") return !todo.isCompleted;
+      if (filterOption === "completed") return todo.isCompleted;
+      return true;
+    });
+    setFilteredTodos(filteredTodos);
+  }, [filterOption, todos]);
 
   const addTodo = (text: string) => {
     if (editTodoIndex !== null) {
@@ -56,8 +70,9 @@ export default function ToDoList() {
   return (
     <div>
       <ToDoForm addTodo={addTodo} />
+      <FilterSelect filterOption={filterOption} setFilterOption={setFilterOption}/>
       <Stack spacing={2} sx={{ mt: 2 }}>
-        {todos.map((todo, index) => (
+        {filteredTodos.map((todo, index) => (
           editTodoIndex === index ? (
             <ToDoForm
               key={index}
