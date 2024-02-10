@@ -16,4 +16,5 @@ export type ToDoProps = {
 export type ToDoFormProps = {
   addTodo: (text: string) => void;
   initialText?: string;
+  setAddingTodo?: (arg: boolean) => void;
 };
