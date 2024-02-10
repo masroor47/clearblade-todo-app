@@ -9,7 +9,6 @@ import { ToDoProps } from './types';
 
 export default function ToDo({
   todo,
-  index,
   completeTodo,
   removeTodo,
   editTodo
@@ -21,16 +20,16 @@ export default function ToDo({
       <div>
         <Checkbox
           checked={todo.isCompleted}
-          onClick={() => completeTodo(index)}
+          onClick={() => completeTodo(todo.id)}
         />
         {todo.text}
       </div>
       <div>
 
-        <IconButton onClick={() => removeTodo(index)}>
+        <IconButton onClick={() => removeTodo(todo.id)}>
           <CloseIcon />
         </IconButton>
-        <IconButton onClick={() => editTodo(index)}>
+        <IconButton onClick={() => editTodo(todo.id)}>
           <EditIcon />
         </IconButton>
       </div>
