@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 
 import { ToDoFormProps } from "./types";
 
-export default function ToDoForm({ addTodo, initialText }: ToDoFormProps) {
+export default function ToDoForm({ addTodo, initialText, setAddingTodo }: ToDoFormProps) {
   const [value, setValue] = useState(initialText || "");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,6 +29,12 @@ export default function ToDoForm({ addTodo, initialText }: ToDoFormProps) {
         <Button type="submit">
           {initialText ? "Save" : "Add"}
         </Button>
+
+        {!initialText && (
+          <Button onClick={(e) => setAddingTodo && setAddingTodo(false)}>
+            Cancel
+          </Button>
+        )}
       </div>
     </form>
   );
