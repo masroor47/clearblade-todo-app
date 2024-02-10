@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
+import SearchTodo from "./SearchTodo";
 import FilterSelect from "./FilterSelect";
 import ToDoForm from "./ToDoForm";
 import ToDo from "./ToDo";
-import { Stack } from "@mui/material";
-
+import { Box, Stack, Button } from "@mui/material";
 import { TodoType } from "./types";
 
 
@@ -14,6 +14,8 @@ export default function ToDoList() {
     const storedTodos = localStorage.getItem("todos");
     return storedTodos ? JSON.parse(storedTodos) : [];
   });
+  const [searchText, setSearchText] = useState<string>("");
+  const [addingTodo, setAddingTodo] = useState<boolean>(false);
   const [filteredTodos, setFilteredTodos] = useState<TodoType[]>(todos);
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
   const [filterOption, setFilterOption] = useState<string>("all");
@@ -22,6 +24,11 @@ export default function ToDoList() {
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchText.toLowerCase()));
+    setFilteredTodos(filteredTodos);
+  }, [searchText]);
 
   useEffect(() => {
     const filteredTodos = todos.filter(todo => {
@@ -47,6 +54,7 @@ export default function ToDoList() {
     } else {
       const newTodo = { id: Date.now(), text, isCompleted: false };
       setTodos([newTodo, ...todos]);
+      setAddingTodo(false);
     }
   };
 
@@ -75,8 +83,24 @@ export default function ToDoList() {
 
   return (
     <div>
-      <ToDoForm addTodo={addTodo} />
-      <FilterSelect filterOption={filterOption} setFilterOption={setFilterOption}/>
+      <Box mb={2}>
+        <SearchTodo searchText={searchText} setSearchText={setSearchText} />
+      </Box>
+
+      <Box mb={2}>
+        {addingTodo ? (
+          <ToDoForm addTodo={addTodo} setAddingTodo={setAddingTodo}/>
+        ) : (
+          <Button variant="contained" onClick={() => setAddingTodo(true)}>Add Todo</Button>
+          // <button onClick={() => setAddingTodo(true)}>Add Todo</button>
+        )}
+      </Box>
+      
+
+      <Box mb={2} >
+        <FilterSelect filterOption={filterOption} setFilterOption={setFilterOption}/>
+      </Box>
+
       <Stack spacing={2} sx={{ mt: 2 }}>
         {filteredTodos.map((todo) => (
           editTodoId === todo.id ? (
@@ -97,5 +121,6 @@ export default function ToDoList() {
         ))}
       </Stack>
     </div>
+
   );
 }
