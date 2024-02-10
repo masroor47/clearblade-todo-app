@@ -5,6 +5,9 @@ import FilterSelect from "./FilterSelect";
 import ToDoForm from "./ToDoForm";
 import ToDo from "./ToDo";
 import { Box, Stack, Button } from "@mui/material";
+
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 import { TodoType } from "./types";
 
 
@@ -81,6 +84,16 @@ export default function ToDoList() {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return;
+    }
+    const items = Array.from(filteredTodos);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setFilteredTodos(items);
+  };
+
   return (
     <div>
       <Box mb={2}>
@@ -95,32 +108,47 @@ export default function ToDoList() {
           // <button onClick={() => setAddingTodo(true)}>Add Todo</button>
         )}
       </Box>
-      
 
       <Box mb={2} >
         <FilterSelect filterOption={filterOption} setFilterOption={setFilterOption}/>
       </Box>
 
-      <Stack spacing={2} sx={{ mt: 2 }}>
-        {filteredTodos.map((todo) => (
-          editTodoId === todo.id ? (
-            <ToDoForm
-              key={todo.id}
-              addTodo={addTodo}
-              initialText={todo.text}
-            />
-          ) : (
-            <ToDo
-              key={todo.id}
-              todo={todo}
-              completeTodo={() => completeTodo(todo.id)}
-              editTodo={() => editTodo(todo.id)}
-              removeTodo={() => removeTodo(todo.id)}
-            />
-          )
-        ))}
-      </Stack>
+      <div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="filteredTodos">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {filteredTodos.map((todo, index) => (
+                <Draggable key={todo.id} draggableId={String(todo.id)} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {editTodoId === todo.id ? (
+                        <ToDoForm
+                          addTodo={addTodo}
+                          initialText={todo.text}
+                        />
+                      ) : (
+                        <ToDo
+                          todo={todo}
+                          completeTodo={() => completeTodo(todo.id)}
+                          editTodo={() => editTodo(todo.id)}
+                          removeTodo={() => removeTodo(todo.id)}
+                        />
+                      )}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      </div>
     </div>
-
   );
 }
