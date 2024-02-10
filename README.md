@@ -44,6 +44,8 @@ identify and affect the todos, instead of their index.
 I used react-beautiful-dnd to enable the drag and drop feature. This was fairly 
 straightforward even though required many components and nesting.
 
+#### It's worth noting that I had to comment out <React.StrictMode> for react-beautiful-dnd to work
+
 ### UI/UX
 One issue is that the search bar and the "Add Todo" text input fields both look 
 similar and both are located at the top of the page. This creates confusion, it may not 
