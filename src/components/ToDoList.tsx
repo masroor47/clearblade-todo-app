@@ -31,7 +31,7 @@ export default function ToDoList() {
   useEffect(() => {
     const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchText.toLowerCase()));
     setFilteredTodos(filteredTodos);
-  }, [searchText]);
+  }, [searchText, todos]);
 
   useEffect(() => {
     const filteredTodos = todos.filter(todo => {
