@@ -3,14 +3,14 @@
 export type TodoType = {
   text: string;
   isCompleted: boolean;
+  id: number;
 };
 
 export type ToDoProps = {
   todo: TodoType;
-  index: number;
-  completeTodo: (index: number) => void;
-  removeTodo: (index: number) => void;
-  editTodo: (index: number) => void;
+  completeTodo: (id: number) => void;
+  removeTodo: (id: number) => void;
+  editTodo: (id: number) => void;
 }
 
 export type ToDoFormProps = {
