@@ -7,18 +7,20 @@ type FilterSelectProps = {
 
 export default function FilterSelect({ filterOption, setFilterOption }: FilterSelectProps) {
 
-  const handleAlignment = (
+  const handleFilterOption = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
+    newFilterOption: string,
   ) => {
-    setFilterOption(newAlignment);
+    if (newFilterOption !== null) {
+      setFilterOption(newFilterOption);
+    }
   };
 
   return (
     <ToggleButtonGroup
       value={filterOption}
       exclusive
-      onChange={handleAlignment}
+      onChange={handleFilterOption}
       size="small"
     >
       <ToggleButton value="all">
