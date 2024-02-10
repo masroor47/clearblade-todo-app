@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import FilterSelect from "./FilterSelect";
 import ToDoForm from "./ToDoForm";
@@ -15,7 +15,7 @@ export default function ToDoList() {
     return storedTodos ? JSON.parse(storedTodos) : [];
   });
   const [filteredTodos, setFilteredTodos] = useState<TodoType[]>(todos);
-  const [editTodoIndex, setEditTodoIndex] = useState<number | null>(null);
+  const [editTodoId, setEditTodoId] = useState<number | null>(null);
   const [filterOption, setFilterOption] = useState<string>("all");
 
   // update local storage when todos change
@@ -34,24 +34,32 @@ export default function ToDoList() {
   }, [filterOption, todos]);
 
   const addTodo = (text: string) => {
-    if (editTodoIndex !== null) {
-      // if this is an edit, update the todo at editTodoIndex
+    // if this is an edit, update the todo at editTodoIndex
+    if (editTodoId !== null) {
       const newTodos = [...todos];
-      newTodos[editTodoIndex].text = text;
+      const index = todos.findIndex((todo) => todo.id === editTodoId);
+      if (index === -1) {
+        throw new Error(`No todo with ID ${editTodoId} was found`);
+      }
+      newTodos[index].text = text;
       setTodos(newTodos);
-      setEditTodoIndex(null); // set editTodoIndex back to null
+      setEditTodoId(null); // set editTodoIndex back to null
     } else {
-      const newTodo = { text, isCompleted: false };
+      const newTodo = { id: Date.now(), text, isCompleted: false };
       setTodos([newTodo, ...todos]);
     }
   };
 
-  const editTodo = (index: number) => {
-    setEditTodoIndex(index);
+  const editTodo = (id: number) => {
+    setEditTodoId(id);
   };
 
-  const completeTodo = (index: number) => {
+  const completeTodo = (id: number) => {
     const newTodos = [...todos];
+    const index = todos.findIndex((todo) => todo.id === id);
+    if (index === -1) {
+      throw new Error(`No todo with ID ${id} was found`);
+    }
     newTodos[index].isCompleted = !newTodos[index].isCompleted;
     // move the completed todo to the end of the list
     if (newTodos[index].isCompleted) {
@@ -61,10 +69,8 @@ export default function ToDoList() {
     setTodos(newTodos);
   };
 
-  const removeTodo = (index: number) => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+  const removeTodo = (id: number) => {
+    setTodos(todos.filter(todo => todo.id !== id));
   };
 
   return (
@@ -72,21 +78,20 @@ export default function ToDoList() {
       <ToDoForm addTodo={addTodo} />
       <FilterSelect filterOption={filterOption} setFilterOption={setFilterOption}/>
       <Stack spacing={2} sx={{ mt: 2 }}>
-        {filteredTodos.map((todo, index) => (
-          editTodoIndex === index ? (
+        {filteredTodos.map((todo) => (
+          editTodoId === todo.id ? (
             <ToDoForm
-              key={index}
+              key={todo.id}
               addTodo={addTodo}
               initialText={todo.text}
             />
           ) : (
             <ToDo
-              key={index}
-              index={index}
+              key={todo.id}
               todo={todo}
-              completeTodo={completeTodo}
-              editTodo={() => editTodo(index)}
-              removeTodo={removeTodo}
+              completeTodo={() => completeTodo(todo.id)}
+              editTodo={() => editTodo(todo.id)}
+              removeTodo={() => removeTodo(todo.id)}
             />
           )
         ))}
